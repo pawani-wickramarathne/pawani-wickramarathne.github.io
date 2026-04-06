@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pawani Wickramarathne — Data Scientist</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #080E1C;
+    --navy2:  #0D1629;
+    --navy3:  #111E35;
+    --teal:   #00C9A7;
+    --teal2:  #00E5C0;
+    --gold:   #F5C842;
+    --text:   #D8E2F0;
+    --muted:  #7B90B0;
+    --border: rgba(0,201,167,0.18);
+    --card:   rgba(13,22,41,0.85);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── Noise texture overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: .4;
+  }
+
+  /* ── Grid background ── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,201,167,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,201,167,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(8,14,28,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 600;
+    color: var(--teal); letter-spacing: .04em;
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: .85rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+    transition: color .25s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .hero-inner { max-width: 750px; }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem; color: var(--teal);
+    letter-spacing: .15em;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: .75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block; width: 2.5rem; height: 1px;
+    background: var(--teal);
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 8vw, 6.5rem);
+    font-weight: 700; line-height: 1.05;
+    color: #EDF2FA;
+    margin-bottom: .5rem;
+  }
+
+  h1 em {
+    font-style: italic; color: var(--teal);
+  }
+
+  .hero-sub {
+    font-size: 1.15rem; color: var(--muted);
+    margin: 1.5rem 0 2.5rem;
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .75rem 1.75rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: .88rem; font-weight: 500; letter-spacing: .06em;
+    text-decoration: none; border-radius: 3px;
+    transition: all .25s;
+  }
+  .btn-primary {
+    background: var(--teal); color: var(--navy);
+  }
+  .btn-primary:hover { background: var(--teal2); transform: translateY(-2px); }
+
+  .btn-outline {
+    border: 1px solid var(--border); color: var(--text);
+    background: transparent;
+  }
+  .btn-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+
+  /* Floating data badge */
+  .hero-badge {
+    position: absolute; right: 4rem; top: 50%;
+    transform: translateY(-50%);
+    display: none;
+  }
+  @media(min-width: 1000px) { .hero-badge { display: block; } }
+
+  .badge-ring {
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    animation: rotate 30s linear infinite;
+  }
+  .badge-ring::before {
+    content: '';
+    position: absolute;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 1px dashed rgba(0,201,167,0.25);
+    animation: rotate 20s linear infinite reverse;
+  }
+  .badge-center {
+    text-align: center;
+    animation: rotate 30s linear infinite reverse;
+  }
+  .badge-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; font-weight: 700; color: var(--teal);
+    line-height: 1;
+  }
+  .badge-label {
+    font-size: .72rem; color: var(--muted);
+    letter-spacing: .1em; text-transform: uppercase;
+  }
+
+  .badge-dot {
+    position: absolute;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--teal);
+  }
+  .badge-dot:nth-child(1) { top: -4px; left: 50%; transform: translateX(-50%); }
+  .badge-dot:nth-child(2) { bottom: -4px; left: 50%; transform: translateX(-50%); opacity: .4; }
+  .badge-dot:nth-child(3) { left: -4px; top: 50%; transform: translateY(-50%); opacity: .6; }
+
+  @keyframes rotate { to { transform: rotate(360deg); } }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1100px; margin: 0 auto;
+    padding: 5rem 4rem;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem; color: var(--teal);
+    letter-spacing: .2em; text-transform: uppercase;
+    display: flex; align-items: center; gap: .75rem;
+    margin-bottom: 1rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 3rem;
+    height: 1px; background: var(--teal); opacity: .5;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600; color: #EDF2FA;
+    margin-bottom: 3rem; line-height: 1.2;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--navy2); }
+
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: start;
+  }
+  @media(max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
+
+  .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 1rem; }
+  .about-text p span { color: var(--text); }
+
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 6px;
+    overflow: hidden;
+  }
+  .stat {
+    background: var(--card);
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+  }
+  .stat-n {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 700; color: var(--teal);
+    line-height: 1;
+  }
+  .stat-l { font-size: .78rem; color: var(--muted); margin-top: .25rem; letter-spacing: .05em; }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--navy); }
+
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    transition: border-color .25s, transform .25s;
+  }
+  .skill-card:hover { border-color: var(--teal); transform: translateY(-3px); }
+
+  .skill-icon {
+    font-size: 1.5rem; margin-bottom: .75rem;
+  }
+  .skill-title {
+    font-size: .8rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: .75rem;
+  }
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: .4rem;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem; color: var(--muted);
+    background: rgba(0,201,167,0.06);
+    border: 1px solid rgba(0,201,167,0.15);
+    padding: .2rem .55rem; border-radius: 3px;
+  }
+
+  /* ── PROJECTS ── */
+  #projects { background: var(--navy2); }
+
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    transition: border-color .25s, transform .25s;
+    display: flex; flex-direction: column;
+  }
+  .project-card:hover { border-color: var(--teal); transform: translateY(-4px); }
+
+  .project-card.featured { border-color: rgba(0,201,167,0.4); }
+
+  .project-header {
+    padding: 1.5rem 1.5rem 0;
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+
+  .project-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .65rem; color: var(--navy);
+    background: var(--teal); padding: .2rem .55rem;
+    border-radius: 2px; letter-spacing: .08em; font-weight: 500;
+  }
+
+  .project-links { display: flex; gap: .75rem; }
+  .project-link {
+    color: var(--muted); text-decoration: none;
+    font-size: .8rem; transition: color .2s;
+  }
+  .project-link:hover { color: var(--teal); }
+
+  .project-body { padding: 1.25rem 1.5rem; flex: 1; }
+
+  .project-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 600;
+    color: #EDF2FA; margin-bottom: .5rem; line-height: 1.3;
+  }
+
+  .project-desc { font-size: .9rem; color: var(--muted); line-height: 1.65; }
+
+  .project-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: .4rem;
+  }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--navy); }
+
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 0; top: .5rem; bottom: 0;
+    width: 1px; background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative; margin-bottom: 2.5rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute; left: -2rem; top: .5rem;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--navy); border: 2px solid var(--teal);
+    transform: translateX(-4px);
+  }
+
+  .t-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem; color: var(--teal);
+    letter-spacing: .1em; margin-bottom: .35rem;
+  }
+  .t-title {
+    font-size: 1rem; font-weight: 600; color: #EDF2FA;
+    margin-bottom: .15rem;
+  }
+  .t-company { font-size: .85rem; color: var(--muted); margin-bottom: .6rem; }
+  .t-desc { font-size: .88rem; color: var(--muted); }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--navy2);
+    text-align: center;
+  }
+
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+  .contact-inner p { color: var(--muted); margin-bottom: 2.5rem; font-size: 1rem; }
+
+  .contact-links {
+    display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: flex; align-items: center; gap: .5rem;
+    color: var(--muted); text-decoration: none;
+    font-size: .88rem; transition: color .25s;
+    border: 1px solid var(--border); border-radius: 3px;
+    padding: .6rem 1.2rem;
+  }
+  .contact-link:hover { color: var(--teal); border-color: var(--teal); }
+
+  .contact-email {
+    margin-top: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .9rem; color: var(--teal);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 1.5rem;
+    font-size: .75rem; color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── Animations ── */
+  .fade-up {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity .65s ease, transform .65s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: none; }
+
+  /* ── Mobile ── */
+  @media(max-width: 700px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { padding: 7rem 1.5rem 3rem; }
+    .container { padding: 3.5rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">P.Wickramarathne</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative;z-index:1;">
+  <div id="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">Data Scientist &amp; Statistician</div>
+      <h1>Pawani<br><em>Wickramarathne</em></h1>
+      <p class="hero-sub">Turning complex data into decisions — with Python, statistical modelling, and a background in insurance &amp; financial services.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+        <a href="mailto:pawaniwickramarathne@gmail.com" class="btn btn-outline">Get in Touch</a>
+      </div>
+    </div>
+
+    <div class="hero-badge">
+      <div class="badge-ring">
+        <div class="badge-dot"></div>
+        <div class="badge-dot"></div>
+        <div class="badge-dot"></div>
+        <div class="badge-center">
+          <div class="badge-num">3.55</div>
+          <div class="badge-label">Honours GPA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">About</div>
+    <div class="about-grid">
+      <div class="about-text fade-up">
+        <p>I'm a <span>Data Scientist</span> based in Sri Lanka with a BSc (Hons) in Statistics from the University of Kelaniya and hands-on experience in the insurance and financial services sector.</p>
+        <p>At <span>HNB Assurance</span>, I analyse large business datasets, build predictive models, automate analytical pipelines with Python, and deliver executive dashboards in Power BI — work that directly shapes product pricing and portfolio strategy.</p>
+        <p>I'm drawn to problems where <span>statistical rigour meets real business impact</span> — whether that's clustering financial risk profiles, building regression models for insurance premiums, or surfacing insights that drive quarterly decisions.</p>
+      </div>
+      <div class="stat-grid fade-up">
+        <div class="stat">
+          <div class="badge-num" style="font-size:2.2rem;">2+</div>
+          <div class="stat-l">Years industry experience</div>
+        </div>
+        <div class="stat">
+          <div class="badge-num" style="font-size:2.2rem;">4+</div>
+          <div class="stat-l">Research projects</div>
+        </div>
+        <div class="stat">
+          <div class="badge-num" style="font-size:2.2rem;">7+</div>
+          <div class="stat-l">Tools & languages</div>
+        </div>
+        <div class="stat">
+          <div class="badge-num" style="font-size:2.2rem;">2×</div>
+          <div class="stat-l">Dean's List honouree</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">Skills</div>
+    <h2>Technical Toolkit</h2>
+    <div class="skills-grid">
+      <div class="skill-card fade-up">
+        <div class="skill-icon">🐍</div>
+        <div class="skill-title">Programming</div>
+        <div class="skill-tags">
+          <span class="tag">Python</span>
+          <span class="tag">pandas</span>
+          <span class="tag">NumPy</span>
+          <span class="tag">scikit-learn</span>
+          <span class="tag">matplotlib</span>
+          <span class="tag">seaborn</span>
+          <span class="tag">R</span>
+          <span class="tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-card fade-up">
+        <div class="skill-icon">📊</div>
+        <div class="skill-title">Machine Learning</div>
+        <div class="skill-tags">
+          <span class="tag">Clustering</span>
+          <span class="tag">Regression</span>
+          <span class="tag">Classification</span>
+          <span class="tag">Feature Engineering</span>
+          <span class="tag">Model Evaluation</span>
+          <span class="tag">Statistical Modelling</span>
+        </div>
+      </div>
+      <div class="skill-card fade-up">
+        <div class="skill-icon">📈</div>
+        <div class="skill-title">Visualisation</div>
+        <div class="skill-tags">
+          <span class="tag">Power BI</span>
+          <span class="tag">Tableau</span>
+          <span class="tag">ggplot2</span>
+          <span class="tag">Advanced Excel</span>
+        </div>
+      </div>
+      <div class="skill-card fade-up">
+        <div class="skill-icon">🏦</div>
+        <div class="skill-title">Domain</div>
+        <div class="skill-tags">
+          <span class="tag">Insurance</span>
+          <span class="tag">Financial Services</span>
+          <span class="tag">Actuarial Data</span>
+          <span class="tag">Risk Analysis</span>
+          <span class="tag">Business Reporting</span>
+        </div>
+      </div>
+      <div class="skill-card fade-up">
+        <div class="skill-icon">🔬</div>
+        <div class="skill-title">Statistics</div>
+        <div class="skill-tags">
+          <span class="tag">Hypothesis Testing</span>
+          <span class="tag">Time-Series</span>
+          <span class="tag">SPSS</span>
+          <span class="tag">MATLAB</span>
+          <span class="tag">E-Views</span>
+          <span class="tag">Minitab</span>
+        </div>
+      </div>
+      <div class="skill-card fade-up">
+        <div class="skill-icon">⚙️</div>
+        <div class="skill-title">Engineering</div>
+        <div class="skill-tags">
+          <span class="tag">Process Automation</span>
+          <span class="tag">Data Cleaning</span>
+          <span class="tag">Pipeline Design</span>
+          <span class="tag">Git</span>
+          <span class="tag">Jupyter</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">Projects</div>
+    <h2>Selected Work</h2>
+    <div class="projects-grid">
+
+      <!-- Project 1 — to be completed -->
+      <div class="project-card featured fade-up">
+        <div class="project-header">
+          <span class="project-badge">Featured</span>
+          <div class="project-links">
+            <a href="https://github.com/pawani-madhusara" class="project-link" target="_blank">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Insurance Premium Prediction</div>
+          <p class="project-desc">End-to-end ML project predicting medical insurance costs from demographic and health factors. Covers EDA, feature engineering, regression modelling (Linear, Random Forest, XGBoost), and model evaluation with RMSE &amp; R².</p>
+        </div>
+        <div class="project-footer">
+          <span class="tag">Python</span>
+          <span class="tag">scikit-learn</span>
+          <span class="tag">pandas</span>
+          <span class="tag">seaborn</span>
+          <span class="tag">XGBoost</span>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card fade-up">
+        <div class="project-header">
+          <span class="project-badge">Research</span>
+          <div class="project-links">
+            <a href="https://github.com/pawani-madhusara" class="project-link" target="_blank">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Risk-Based Portfolio Optimization — NYSE</div>
+          <p class="project-desc">Applied K-Means and hierarchical clustering to segment NYSE-listed companies by risk profile. Used silhouette scoring and elbow method for cluster validation, producing actionable portfolio allocation recommendations.</p>
+        </div>
+        <div class="project-footer">
+          <span class="tag">Python</span>
+          <span class="tag">scikit-learn</span>
+          <span class="tag">Clustering</span>
+          <span class="tag">Finance</span>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card fade-up">
+        <div class="project-header">
+          <span class="project-badge">Research</span>
+          <div class="project-links">
+            <a href="https://github.com/pawani-madhusara" class="project-link" target="_blank">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-title">Infant Mortality Rates — Asian Countries</div>
+          <p class="project-desc">Multivariate statistical analysis identifying socioeconomic drivers of infant mortality across Asian nations. Applied multiple regression and hypothesis testing in R, with visualisations in ggplot2.</p>
+        </div>
+        <div class="project-footer">
+          <span class="tag">R</span>
+          <span class="tag">ggplot2</span>
+          <span class="tag">Regression</span>
+          <span class="tag">Statistics</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">Experience</div>
+    <h2>Career Timeline</h2>
+    <div class="timeline">
+      <div class="timeline-item fade-up">
+        <div class="t-date">Apr 2025 — Present</div>
+        <div class="t-title">Actuarial Analyst</div>
+        <div class="t-company">HNB Assurance PLC — Head Office</div>
+        <div class="t-desc">Analysing large insurance datasets for product performance and pricing. Automated Python pipelines cutting reporting time from hours to minutes. Built Power BI dashboards for executive quarterly reviews.</div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="t-date">Apr 2024 — Mar 2025</div>
+        <div class="t-title">Teaching Assistant — Statistics &amp; Data Analysis</div>
+        <div class="t-company">University of Kelaniya</div>
+        <div class="t-desc">Facilitated tutorials for 100+ undergraduates on statistical methods and data analysis using R and SPSS. Mentored students on research methodology and data interpretation.</div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="t-date">Aug 2023 — Nov 2023</div>
+        <div class="t-title">Actuarial Analyst Intern</div>
+        <div class="t-company">Softlogic Life Insurance — Head Office</div>
+        <div class="t-desc">Conducted data quality checks on actuarial datasets and assisted the valuation team with policy liability assessments for financial reporting.</div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="t-date">Mar 2020 — Apr 2024</div>
+        <div class="t-title">BSc (Hons) Statistics — Second Class Upper Division</div>
+        <div class="t-company">University of Kelaniya · GPA 3.55 · Dean's List 2022 &amp; 2023</div>
+        <div class="t-desc">Google Data Analytics Professional Certificate (Coursera, 2026).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="section-label" style="justify-content:center;">Contact</div>
+      <h2 style="margin-bottom:1rem;">Let's work together</h2>
+      <p>Open to data scientist and analyst roles. Based in Sri Lanka — available for remote opportunities.</p>
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/pawani-madhusara" class="contact-link" target="_blank">
+          LinkedIn ↗
+        </a>
+        <a href="https://github.com/pawani-madhusara" class="contact-link" target="_blank">
+          GitHub ↗
+        </a>
+        <a href="mailto:pawaniwickramarathne@gmail.com" class="contact-link">
+          Email ↗
+        </a>
+      </div>
+      <div class="contact-email">pawaniwickramarathne@gmail.com</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built by Pawani Wickramarathne · 2025
+</footer>
+
+<script>
+  // Scroll fade-up animation
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
