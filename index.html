@@ -40,16 +40,8 @@
     pointer-events: none; z-index: 0; opacity: .4;
   }
 
-  /* ── Grid background ── */
-  body::after {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(0,201,167,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,201,167,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none; z-index: 0;
-  }
+  /* ── Grid background removed ── */
+  body::after { content: ''; }
 
   /* ── NAV ── */
   nav {
@@ -144,9 +136,10 @@
 
   /* ── Hero Photo ── */
   .hero-layout {
-    display: flex; align-items: center;
+    display: flex; align-items: flex-start;
     justify-content: space-between;
     width: 100%;
+    padding-top: 2rem;
   }
   .hero-photo-right {
     flex-shrink: 0;
