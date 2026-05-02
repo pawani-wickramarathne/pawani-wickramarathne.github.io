@@ -255,6 +255,45 @@
   .p13{animation:floatA 3.5s ease-in-out infinite 1.3s}
   .p14{animation:floatB 4s ease-in-out infinite 0.5s}
 
+
+  /* ── Hero Code Block ── */
+  .hero-code {
+    display: none;
+    flex-shrink: 0;
+    width: 340px;
+  }
+  @media(min-width: 1000px) { .hero-code { display: block; } }
+
+  .code-block {
+    background: #0D1629;
+    border: 1px solid rgba(0,201,167,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    line-height: 1.8;
+  }
+  .code-header {
+    background: #111E35;
+    padding: .5rem .9rem;
+    display: flex; align-items: center; gap: .4rem;
+    border-bottom: 1px solid rgba(0,201,167,0.1);
+  }
+  .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .code-dot.r { background: #ff5f57; }
+  .code-dot.y { background: #ffbd2e; }
+  .code-dot.g { background: #28c840; }
+  .code-fname { font-size: .68rem; color: var(--muted); margin-left: .5rem; }
+  .code-body { padding: .9rem 1rem; }
+  .code-body span { display: block; }
+  .cc { color: #4a6580; }
+  .ck { color: #c792ea; }
+  .cf { color: #82aaff; }
+  .cs { color: #c3e88d; }
+  .cv { color: #eeffff; }
+  .ct { color: #00C9A7; }
+  .ci { padding-left: 1rem; }
+
   .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
   .fade-up.visible { opacity: 1; transform: none; }
 
@@ -296,35 +335,32 @@
           <a href="mailto:pawaniwickramarathne@gmail.com" class="btn btn-outline">Get in Touch</a>
         </div>
       </div>
-      <div class="hero-skills">
-        <div class="skill-row">
-          <span class="skill-pill p1">Python</span>
-          <span class="skill-pill p2">R</span>
-          <span class="skill-pill p3">SQL</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-pill p4">Machine Learning</span>
-          <span class="skill-pill p5">scikit-learn</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-pill p6">Power BI</span>
-          <span class="skill-pill p7">Tableau</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-pill p8">Statistical Modelling</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-pill p9">pandas</span>
-          <span class="skill-pill p10">NumPy</span>
-          <span class="skill-pill p11">XGBoost</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-pill p12">Data Analysis</span>
-          <span class="skill-pill p13">EDA</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-pill p14">Time-Series</span>
-          <span class="skill-pill p1">Regression</span>
+      <div class="hero-code">
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dot r"></div>
+            <div class="code-dot y"></div>
+            <div class="code-dot g"></div>
+            <span class="code-fname">model.py</span>
+          </div>
+          <div class="code-body">
+            <span class="cc"># Insurance Risk Model</span>
+            <span><span class="ck">from</span> <span class="cv">sklearn.ensemble</span> <span class="ck">import</span> <span class="cf">RandomForestRegressor</span></span>
+            <span><span class="ck">from</span> <span class="cv">xgboost</span> <span class="ck">import</span> <span class="cf">XGBRegressor</span></span>
+            <span>&nbsp;</span>
+            <span class="cc"># Train &amp; evaluate models</span>
+            <span><span class="cv">models</span> <span class="ct">=</span> {</span>
+            <span class="ci"><span class="cs">"Random Forest"</span>: <span class="cf">RandomForestRegressor</span>(),</span>
+            <span class="ci"><span class="cs">"XGBoost"</span>: <span class="cf">XGBRegressor</span>()</span>
+            <span>}</span>
+            <span>&nbsp;</span>
+            <span><span class="ck">for</span> <span class="cv">name, model</span> <span class="ck">in</span> <span class="cf">models.items</span>():</span>
+            <span class="ci"><span class="cv">model</span>.<span class="cf">fit</span>(<span class="cv">X_train, y_train</span>)</span>
+            <span class="ci"><span class="cv">r2</span> <span class="ct">=</span> <span class="cf">r2_score</span>(<span class="cv">y_test</span>, <span class="cv">model</span>.<span class="cf">predict</span>(<span class="cv">X_test</span>))</span>
+            <span class="ci"><span class="cf">print</span>(<span class="cs">f"<span class="ct">{name}</span> R²: <span class="ct">{r2:.4f}</span>"</span>)</span>
+            <span>&nbsp;</span>
+            <span class="cc"># Best: XGBoost R² = 0.8502 ✓</span>
+          </div>
         </div>
       </div>
     </div>
