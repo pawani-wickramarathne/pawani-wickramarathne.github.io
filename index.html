@@ -284,8 +284,7 @@
   .code-dot.y { background: #ffbd2e; }
   .code-dot.g { background: #28c840; }
   .code-fname { font-size: .68rem; color: var(--muted); margin-left: .5rem; }
-  .code-body { padding: .9rem 1rem; overflow-x: auto; white-space: nowrap; }
-  .code-body span { display: block; white-space: nowrap; }
+  .code-body { padding: .9rem 1rem; }
   .code-body span { display: block; }
   .cc { color: #4a6580; }
   .ck { color: #c792ea; }
@@ -344,22 +343,24 @@
             <div class="code-dot g"></div>
             <span class="code-fname">model.py</span>
           </div>
-          <div class="code-body"><span class="cc"># Insurance Risk Model</span>
-<span><span class="ck">from</span> sklearn.ensemble <span class="ck">import</span> <span class="cf">RandomForestRegressor</span></span>
-<span><span class="ck">from</span> xgboost <span class="ck">import</span> <span class="cf">XGBRegressor</span></span>
-<span>&nbsp;</span>
-<span class="cc"># Train &amp; evaluate models</span>
-<span><span class="cv">models</span> <span class="ct">=</span> {</span>
-<span class="ci"><span class="cs">"Random Forest"</span>: <span class="cf">RandomForestRegressor</span>(),</span>
-<span class="ci"><span class="cs">"XGBoost"</span>: <span class="cf">XGBRegressor</span>()</span>
-<span>}</span>
-<span>&nbsp;</span>
-<span><span class="ck">for</span> <span class="cv">name, model</span> <span class="ck">in</span> <span class="cf">models.items</span>():</span>
-<span class="ci"><span class="cv">model</span>.<span class="cf">fit</span>(<span class="cv">X_train, y_train</span>)</span>
-<span class="ci"><span class="cv">r2</span> <span class="ct">=</span> <span class="cf">r2_score</span>(<span class="cv">y_test, preds</span>)</span>
-<span class="ci"><span class="cf">print</span>(<span class="cs">f"<span class="ct">{name}</span> R²: <span class="ct">{r2:.4f}</span>"</span>)</span>
-<span>&nbsp;</span>
-<span class="cc"># Best: XGBoost  R² = 0.8502 ✓</span></div>
+          <div class="code-body">
+            <span class="cc"># Insurance Risk Model</span>
+            <span><span class="ck">from</span> <span class="cv">sklearn.ensemble</span> <span class="ck">import</span> <span class="cf">RandomForestRegressor</span></span>
+            <span><span class="ck">from</span> <span class="cv">xgboost</span> <span class="ck">import</span> <span class="cf">XGBRegressor</span></span>
+            <span>&nbsp;</span>
+            <span class="cc"># Train &amp; evaluate models</span>
+            <span><span class="cv">models</span> <span class="ct">=</span> {</span>
+            <span class="ci"><span class="cs">"Random Forest"</span>: <span class="cf">RandomForestRegressor</span>(),</span>
+            <span class="ci"><span class="cs">"XGBoost"</span>: <span class="cf">XGBRegressor</span>()</span>
+            <span>}</span>
+            <span>&nbsp;</span>
+            <span><span class="ck">for</span> <span class="cv">name, model</span> <span class="ck">in</span> <span class="cf">models.items</span>():</span>
+            <span class="ci"><span class="cv">model</span>.<span class="cf">fit</span>(<span class="cv">X_train, y_train</span>)</span>
+            <span class="ci"><span class="cv">r2</span> <span class="ct">=</span> <span class="cf">r2_score</span>(<span class="cv">y_test</span>, <span class="cv">model</span>.<span class="cf">predict</span>(<span class="cv">X_test</span>))</span>
+            <span class="ci"><span class="cf">print</span>(<span class="cs">f"<span class="ct">{name}</span> R²: <span class="ct">{r2:.4f}</span>"</span>)</span>
+            <span>&nbsp;</span>
+            <span class="cc"># Best: XGBoost R² = 0.8502 ✓</span>
+          </div>
         </div>
       </div>
     </div>
